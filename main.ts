@@ -142,7 +142,7 @@ try {
 }
 
 const getKey = (number = -1) => {
-  const token = (number < 1) ? ENV_TOKEN : "SLINK_API_KEY" + "_" + number;
+  const token = (number < 1) ? ENV_TOKEN : ENV_TOKEN + "_" + number;
   const key = env[token] || Deno.env.get(token);
   if (key) {
     console.log(number + ". STARTING UP, API KEY IS " + key.length + " Characters long");
