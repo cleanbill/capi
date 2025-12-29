@@ -110,37 +110,6 @@ export function display(data: Array<Location>, id: number) {
 
 const sortedList = sortData();
 
-// KV and test KV setup
-
-const testKV = () => {
-  const store = new Map<string, any>();
-  const testKV = {
-    set: (keys: Array<string>, payload: any) => {
-      const key = JSON.stringify(keys);
-      console.log("Stored " + key, ' => ', payload);
-      store.set(key, payload);
-      return payload
-    },
-    get: (keys: Array<string>) => {
-      const key = JSON.stringify(keys);
-      console.log("getting " + key);
-      const data = store.get(key);
-      return data;
-    },
-    store
-  }
-  return testKV;
-}
-
-let kv;
-try {
-  kv = await Deno.openKv();
-} catch (err) {
-  console.error("No Kv ", err);
-  console.log(kv);
-  kv = testKV();
-}
-
 const getKey = (number = -1) => {
   const token = (number < 1) ? ENV_TOKEN : ENV_TOKEN + "_" + number;
   const key = env[token] || Deno.env.get(token);
@@ -160,7 +129,7 @@ const checkApiKey = (c: HonoRequest, token: string | undefined) => {
     c.status(400);
     return c.body("Missing token ");
   }
-  if (!validToken) {
+  if (!validToken(token)) {
     c.status(403);
     return c.body(token.length + ". Bad api key " + token);
   }
@@ -212,7 +181,6 @@ app.get("/:id", async (c: HonoRequest) => {
   }
 
   try {
-    console.info(JSON.stringify(result));
     return c.json(result);
   } catch (er) {
     console.error(er);
