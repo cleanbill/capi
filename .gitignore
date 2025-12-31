@@ -129,5 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 data.json
-tester.ts
+tester.sh
 
