@@ -175,9 +175,9 @@ app.get("/:id", async (c: HonoRequest) => {
   console.info('Token OK');
   const result = getResult(id);
   if (Object.keys(result).length > 0) {
-    console.info("'" + token + "' request got data back");
+    console.info("request got data back");
   } else {
-    console.warn("'" + token + "' request got nothing back!?");
+    console.warn("request got nothing back!?");
   }
 
   try {
